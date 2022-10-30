@@ -27,11 +27,12 @@ const bunnySlice = createSlice({
         color: "black",
         cuteness: 0,
       });
-
-      //deleteBunny
+    },
+    deleteBunny(state, action: PayloadAction<number>) {
+      return state.filter(bunny => bunny.id !== action.payload);
     },
   },
 });
 
-export const {addBunny} = bunnySlice.actions
-export default bunnySlice.reducer
+export const { addBunny, deleteBunny } = bunnySlice.actions;
+export default bunnySlice.reducer;
