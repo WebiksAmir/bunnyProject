@@ -1,11 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-
-export interface Bunny {
-  id: number;
-  name: string;
-  color: string;
-  cuteness: number;
-}
+import { Bunny } from "../interfaces";
+import { randomNumber } from "../util";
 
 const initialState: Bunny[] = [
   {
@@ -16,20 +11,39 @@ const initialState: Bunny[] = [
   },
 ];
 
+interface colorChoice {
+  [key: number]: string;
+}
+const colorIndex: colorChoice = {
+  1: "white",
+  2: "brown",
+  3: "grey",
+  4: "blue",
+  5: "green",
+  6: "red",
+  7: "yellow",
+  8: "orange",
+  9: "pink",
+  10: "black",
+};
+
 const bunnySlice = createSlice({
   name: "bunnies",
   initialState,
   reducers: {
     addBunny(state) {
-      state.push({
-        id: state.length + 1,
-        name: "New Bunny",
-        color: "black",
-        cuteness: 0,
-      });
+      const length: number = state.length;
+      const nextId: number = length ? state[length - 1].id + 1 : 1;
+      const newBunny: Bunny = {
+        id: nextId,
+        name: "new Rabbit",
+        cuteness: randomNumber(),
+        color: colorIndex[randomNumber()],
+      };
+      state.push(newBunny);
     },
     deleteBunny(state, action: PayloadAction<number>) {
-      return state.filter(bunny => bunny.id !== action.payload);
+      return state.filter((bunny) => bunny.id !== action.payload);
     },
   },
 });
