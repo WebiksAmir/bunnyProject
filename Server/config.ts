@@ -31,15 +31,6 @@ interface Config {
 // Loading process.env as ENV interface
 
 const getConfig = (): ENV => {
-  console.log({
-    NODE_ENV: process.env.NODE_ENV,
-    PORT: process.env.PORT ? Number(process.env.PORT) : undefined,
-    PG_HOST: process.env.PG_HOST,
-    PG_USER: process.env.PG_USER,
-    PG_PORT: process.env.PORT ? Number(process.env.PG_PORT) : undefined,
-    PG_PW: process.env.PG_PW,
-    PG_DATABASE: process.env.PG_DATABASE,
-  })
   return {
     NODE_ENV: process.env.NODE_ENV,
     PORT: process.env.PORT ? Number(process.env.PORT) : undefined,
