@@ -1,15 +1,16 @@
 import { useState, useEffect } from "react";
 import "./App.css";
 import { useAppDispatch, useAppSelector } from "./store/hooks";
-import { addBunny, deleteBunny,getAllBunnies } from "./store/bunnySlice";
+import { addBunny, deleteBunny, getAllBunnies } from "./store/bunnySlice";
 import ListRender from "./components/ListRender";
 
 function App() {
   useEffect(() => {
-    dispatch(getAllBunnies())
-  }, [])
+    dispatch(getAllBunnies());
+  }, []);
 
   const bunnyState = useAppSelector((state) => state.bunny);
+  const bunnyArray = useAppSelector((state) => state.bunny.bunnies);
   const dispatch = useAppDispatch();
 
   const [id, setID] = useState<string>("0");
@@ -19,7 +20,7 @@ function App() {
       {bunnyState.loading && <div>Loading...</div>}
       {!bunnyState.loading && (
         <div>
-          {bunnyState.bunnies.map((bunny) => {
+          {bunnyArray.map((bunny) => {
             return <ListRender key={bunny.id} bunny={bunny} />;
           })}
           <button onClick={() => dispatch(addBunny())}>add Random Bunny</button>
