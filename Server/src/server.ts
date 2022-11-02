@@ -1,7 +1,7 @@
 import express, { Application } from "express";
-import { bunnyRoute } from "./route/bunnies";
+import { bunnyRoute } from "./route/bunniesRoute";
 import config from "../config";
-import createConnectionPool from "@databases/pg";
+import createConnectionPool from '@databases/pg';
 
 import { pool } from "./lib/db";
 
@@ -14,7 +14,8 @@ const connectDb = async () => {
   try {
     await pool.connect();
     const res = await pool.query("SELECT * FROM bunnies");
-    await pool.end();
+    console.log(res);
+    // await pool.end();
   } catch (error) {
     console.log(error);
   }
