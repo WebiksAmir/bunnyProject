@@ -1,11 +1,29 @@
-import express, { Application, Request, Response,Router  } from "express";
-import {bunnyRoute} from "./route/bunnies"
+import express, { Application } from "express";
+import { bunnyRoute } from "./route/bunnies";
+import config from "../config";
+import createConnectionPool from '@databases/pg';
 
-const app: Application = express()
-const port: number = 8000
+import { pool } from "./lib/db";
+
+
+const app: Application = express();
+const port = config.PORT;
 
 app.use("/bunnies", bunnyRoute);
 
+const connectDb = async () => {
+  try {
+    await pool.connect();
+    const res = await pool.query("SELECT * FROM Bunnies");
+    console.log(res);
+    await pool.end();
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+connectDb();
+
 app.listen(port, () => {
-    console.log(`⚡️[server]: Server is running at https://localhost:${port}`);
-  });
+  console.log(`⚡️[server]: Server is running at https://localhost:${port}`);
+});
