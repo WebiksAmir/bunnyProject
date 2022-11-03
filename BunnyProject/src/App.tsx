@@ -3,6 +3,7 @@ import "./App.css";
 import { useAppDispatch, useAppSelector } from "./store/hooks";
 import { addBunny, deleteBunny, getAllBunnies } from "./store/bunnySlice";
 import ListRender from "./components/ListRender";
+import BunnyDoughnut from "./components/BunnyDoughnut"
 
 function App() {
   useEffect(() => {
@@ -32,6 +33,7 @@ function App() {
             value={id}
             onChange={(e) => setID(e.target.value)}
           />
+          <BunnyDoughnut />
         </div>
       )}
     </div>
