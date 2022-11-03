@@ -9,6 +9,5 @@ export const dataArrayCuteness = (data: Bunny[]) => {
   data.map((bunny) => {
     cute[bunny.cuteness - 1]++;
   });
-  console.log(cute)
   return cute;
 };
