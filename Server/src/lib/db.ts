@@ -9,7 +9,7 @@ export const pool = new Pool({
   port: config.PG_PORT,
 });
 
-export function query(sql: string) {
+export const query = (sql: string) => {
   return new Promise((resolve, reject) => {
     pool.query(sql, (err, result) => {
       if (err) reject(err);

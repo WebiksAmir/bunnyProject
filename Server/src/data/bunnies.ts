@@ -1,6 +1,6 @@
 import { query } from "../lib/db";
 
-export async function getFullUsersList() {
+export const getFullUsersList = async () => {
   try {
     const sql = `SELECT * FROM bunnies`;
     const list = await query(sql);
@@ -8,9 +8,14 @@ export async function getFullUsersList() {
   } catch (err) {
     console.log(err);
   }
-}
+};
 
-export async function insertBunny(id:number, name:string, cuteness:number, color:string) {
+export const insertBunny = async (
+  id: number,
+  name: string,
+  cuteness: number,
+  color: string
+) => {
   try {
     const sql = `INSERT INTO bunnies (id, name, cuteness, color) VALUES ('${id}','${name}', '${cuteness}','${color}')`;
     const list = await query(sql);
@@ -18,4 +23,4 @@ export async function insertBunny(id:number, name:string, cuteness:number, color
   } catch (err) {
     console.log(err);
   }
-}
+};
