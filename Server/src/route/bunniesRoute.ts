@@ -13,6 +13,8 @@ bunnyRoute.get("/", async (req: Request, res: Response) => {
 
 bunnyRoute.post("/", async (req: Request, res: Response) => {
   try {
+    console.log("-------------------------------Request-------------------------------------")
+    console.log(req.body)
     const { id, name, cuteness, color } = req.body;
     const bunny = await insertBunny(id, name, cuteness, color);
     res.send(bunny);

@@ -8,6 +8,7 @@ import { pool } from "./lib/db";
 const app: Application = express();
 const port = config.PORT;
 
+app.use(express.json());
 app.use("/bunnies", bunnyRoute);
 
 const connectDb = async () => {
@@ -15,7 +16,7 @@ const connectDb = async () => {
     await pool.connect();
     const res = await pool.query("SELECT * FROM bunnies");
     console.log(res);
-    // await pool.end();
+    await pool.end();
   } catch (error) {
     console.log(error);
   }
