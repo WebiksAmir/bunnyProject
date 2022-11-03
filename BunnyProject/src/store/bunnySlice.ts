@@ -32,7 +32,7 @@ const colorIndex: colorChoice = {
 const URL = "http://localhost:8000";
 
 export const getAllBunnies = createAsyncThunk("bunnies/getAllBunnies", () => {
-  return axios.get(`${URL}/bunnies`).then((response) => response.data);
+  return axios.get(`${URL}/bunnies`).then((response) => response.data.rows);
 });
 
 const bunnySlice = createSlice({
