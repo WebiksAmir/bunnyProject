@@ -1,19 +1,31 @@
 import React from "react";
-import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
+import { Chart as ChartJS, ArcElement, Tooltip, Legend, Title } from "chart.js";
 import { Pie } from "react-chartjs-2";
 import { dataArrayCuteness } from "../util";
-import { useAppSelector } from "../store/hooks";
+import { bunnyState } from "../store/selectors";
+import { useSelector } from "react-redux";
 
-ChartJS.register(ArcElement, Tooltip, Legend);
+ChartJS.register(ArcElement, Title, Tooltip, Legend);
 
 export default function BunnyDoughnut() {
-  const bunnyArray = useAppSelector((state) => state.bunny.bunnies);
-  const cuteness = dataArrayCuteness(bunnyArray);
+  const myBunnyState = useSelector(bunnyState).bunnies
+  const cuteness = dataArrayCuteness(myBunnyState);
+  const options = {
+    responsive: true,
+    plugins: {
+      legend: {
+        position: "top" as const,
+      },
+      title: {
+        display: true,
+        text: "bunny cuteness chart",
+      },
+    },
+  };
   const data = {
     labels: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
     datasets: [
       {
-        label: "# of Votes",
         data: cuteness,
         backgroundColor: [
           "rgba(255, 99, 132, 0.1)",
@@ -33,10 +45,6 @@ export default function BunnyDoughnut() {
     ],
   };
 
-  return (
-    <>
-      <h2>bunny cuteness chart</h2>
-      <Pie data={data} />
-    </>
-  );
+  return <Pie options={options} data={data} />;
+
 }

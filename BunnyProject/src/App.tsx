@@ -1,27 +1,31 @@
 import { useState, useEffect } from "react";
 import "./App.css";
-import { useAppDispatch, useAppSelector } from "./store/hooks";
-import { addBunny, deleteBunny, getAllBunnies } from "./store/bunnySlice";
+import { bunnyState, duckState , useAppDispatch, loadingState } from "./store/selectors";
+import { addBunny, deleteBunny, getAllBunnies } from "./store/bunny/bunnySlice";
 import ListRender from "./components/ListRender";
-import BunnyDoughnut from "./components/BunnyDoughnut"
+import { useSelector } from "react-redux";
+import { Bunny } from "./store/bunny/interface";
+import BunnyDoughnut from "./components/BunnyDoughnut";
+import DucksVsBunnies from "./components/DucksVsBunnies";
 
+export const URL = "http://localhost:8000";
+ 
 function App() {
   useEffect(() => {
     dispatch(getAllBunnies());
   }, []);
 
-  const bunnyState = useAppSelector((state) => state.bunny);
-  const bunnyArray = useAppSelector((state) => state.bunny.bunnies);
   const dispatch = useAppDispatch();
-
+  const myBunnyState = useSelector(bunnyState).bunnies;
+  const myLoadingState = useSelector(loadingState);
   const [id, setID] = useState<string>("0");
 
   return (
     <div className="App">
-      {bunnyState.loading && <div>Loading...</div>}
-      {!bunnyState.loading && (
+      {myLoadingState.loading && <div>Loading...</div>}
+      {!myLoadingState.loading && (
         <div>
-          {bunnyArray.map((bunny) => {
+          {myBunnyState.map((bunny: Bunny) => {
             return <ListRender key={bunny.id} bunny={bunny} />;
           })}
           <button onClick={() => dispatch(addBunny())}>add Random Bunny</button>
@@ -34,6 +38,7 @@ function App() {
             onChange={(e) => setID(e.target.value)}
           />
           <BunnyDoughnut />
+          <DucksVsBunnies />
         </div>
       )}
     </div>

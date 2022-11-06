@@ -1,35 +1,12 @@
 import { createSlice, PayloadAction, createAsyncThunk } from "@reduxjs/toolkit";
-import { Bunny } from "../interfaces";
-import { randomNumber } from "../util";
+import { URL } from "../../App";
+import { Bunny } from "./interface";
+import { initialState } from "./initial";
+import { randomNumber, colorIndex } from "../../util";
 import axios from "axios";
-
-const initialState: {
-  loading: boolean;
-  bunnies: Bunny[];
-  error: string | undefined;
-} = {
-  loading: false,
-  bunnies: [],
-  error: "",
-};
-
-interface colorChoice {
-  [key: number]: string;
-}
-const colorIndex: colorChoice = {
-  1: "white",
-  2: "brown",
-  3: "grey",
-  4: "blue",
-  5: "green",
-  6: "red",
-  7: "yellow",
-  8: "orange",
-  9: "pink",
-  10: "black",
-};
-
-const URL = "http://localhost:8000";
+import { toggleLoading } from "../loading/loadingSlice";
+import { useAppDispatch } from "../selectors";
+import { useDispatch } from "react-redux";
 
 export const getAllBunnies = createAsyncThunk("bunnies/getAllBunnies", () => {
   return axios.get(`${URL}/bunnies`).then((response) => response.data.rows);
@@ -59,20 +36,19 @@ const bunnySlice = createSlice({
   },
   extraReducers: (builder) => {
     builder.addCase(getAllBunnies.pending, (state, action) => {
-      state.loading = true;
+      toggleLoading()
     });
     builder.addCase(getAllBunnies.fulfilled, (state, action) => {
-      state.loading = false;
       state.bunnies = action.payload;
-      state.error = "";
     });
     builder.addCase(getAllBunnies.rejected, (state, action) => {
-      state.loading = false;
-      state.bunnies = [];
-      state.error = action.error.message;
+      console.log("X");
+      console.log(action.error.message);
     });
   },
 });
+
+// export const bunniesArray = (state: any)=> state.bunnies
 
 export const { addBunny, deleteBunny } = bunnySlice.actions;
 export default bunnySlice.reducer;
