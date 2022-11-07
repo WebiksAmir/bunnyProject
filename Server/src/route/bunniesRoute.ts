@@ -1,10 +1,10 @@
 import express, { Request, Response } from "express";
 export const bunnyRoute = express.Router();
-import { getFullUsersList,insertBunny } from "../data/bunnies";
+import { getBunniesList,insertBunny } from "../data/bunnies";
 
 bunnyRoute.get("/", async (req: Request, res: Response) => {
   try {
-    const user = await getFullUsersList();
+    const user = await getBunniesList();
     res.send(user);
   } catch (err) {
     console.log(err);

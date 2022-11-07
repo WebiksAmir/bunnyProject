@@ -1,6 +1,6 @@
 import { query } from "../lib/db";
 
-export const getFullUsersList = async () => {
+export const getBunniesList = async () => {
   try {
     const sql = `SELECT * FROM bunnies`;
     const list = await query(sql);
