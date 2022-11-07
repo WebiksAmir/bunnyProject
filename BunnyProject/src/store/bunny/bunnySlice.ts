@@ -4,12 +4,10 @@ import { Bunny } from "./interface";
 import { initialState } from "./initial";
 import { randomNumber, colorIndex } from "../../util";
 import axios from "axios";
-import { toggleLoading } from "../loading/loadingSlice";
-import { useAppDispatch } from "../selectors";
-import { useDispatch } from "react-redux";
 
-export const getAllBunnies = createAsyncThunk("bunnies/getAllBunnies", () => {
-  return axios.get(`${URL}/bunnies`).then((response) => response.data.rows);
+export const getAllBunnies = createAsyncThunk("bunnies/getAllBunnies", async () => {
+  const response = await axios.get(`${URL}/bunnies`);
+  return response.data.rows;
 });
 
 const bunnySlice = createSlice({
@@ -36,14 +34,17 @@ const bunnySlice = createSlice({
   },
   extraReducers: (builder) => {
     builder.addCase(getAllBunnies.pending, (state, action) => {
-      toggleLoading()
+      state.loading = true;
     });
     builder.addCase(getAllBunnies.fulfilled, (state, action) => {
+      state.loading = false;
       state.bunnies = action.payload;
+      state.error = "";
     });
     builder.addCase(getAllBunnies.rejected, (state, action) => {
-      console.log("X");
-      console.log(action.error.message);
+      state.loading = false;
+      state.bunnies = [];
+      state.error = action.error.message as string;
     });
   },
 });

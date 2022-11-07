@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import "./App.css";
-import { bunnyState, duckState , useAppDispatch, loadingState } from "./store/selectors";
+import { bunnyState, duckState , useAppDispatch } from "./store/selectors";
 import { addBunny, deleteBunny, getAllBunnies } from "./store/bunny/bunnySlice";
 import ListRender from "./components/ListRender";
 import { useSelector } from "react-redux";
@@ -16,16 +16,17 @@ function App() {
   }, []);
 
   const dispatch = useAppDispatch();
-  const myBunnyState = useSelector(bunnyState).bunnies;
-  const myLoadingState = useSelector(loadingState);
+  const myBunnyState = useSelector(bunnyState);
+  const myDuckState = useSelector(duckState);
+  const loading = myBunnyState.loading && myDuckState.loading
   const [id, setID] = useState<string>("0");
 
   return (
     <div className="App">
-      {myLoadingState.loading && <div>Loading...</div>}
-      {!myLoadingState.loading && (
+      {loading && <div>Loading...</div>}
+      {!loading && (
         <div>
-          {myBunnyState.map((bunny: Bunny) => {
+          {myBunnyState.bunnies.length && myBunnyState.bunnies.map((bunny: Bunny) => {
             return <ListRender key={bunny.id} bunny={bunny} />;
           })}
           <button onClick={() => dispatch(addBunny())}>add Random Bunny</button>

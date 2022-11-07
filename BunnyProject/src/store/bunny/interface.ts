@@ -11,4 +11,6 @@ export interface colorChoice {
 
 export interface Store {
   bunnies: Bunny[];
+  loading:boolean,
+  error:string
 }

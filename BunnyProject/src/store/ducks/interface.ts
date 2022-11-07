@@ -11,4 +11,6 @@ export interface colorChoice {
 
 export interface Store {
   ducks: Duck[];
+  loading:boolean,
+  error:string
 }
