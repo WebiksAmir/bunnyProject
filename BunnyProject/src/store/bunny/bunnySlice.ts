@@ -9,6 +9,11 @@ export const getAllBunnies = createAsyncThunk("bunnies/getAllBunnies", async () 
   const response = await axios.get(`${URL}/bunnies`);
   return response.data.rows;
 });
+export const addBunnyToDB = createAsyncThunk("bunnies/getAllBunnies", async (bunny:Bunny) => {
+  const response = await axios.post(`${URL}/bunnies`,bunny);
+  console.log(response)
+  return response.data;
+});
 
 const bunnySlice = createSlice({
   name: "bunnies",
@@ -23,6 +28,7 @@ const bunnySlice = createSlice({
         cuteness: randomNumber(),
         color: colorIndex[randomNumber()],
       };
+      addBunnyToDB(newBunny)
       state.bunnies.push(newBunny);
     },
     deleteBunny(state, action: PayloadAction<string>) {
