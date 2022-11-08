@@ -7,15 +7,19 @@ import {
   getAllBunnies,
   addBunnyToDB,
 } from "./store/bunny/bunnySlice";
+import { setAllDucks } from "./store/ducks/DuckSlice";
 import ListRender from "./components/ListRender";
 import { useSelector } from "react-redux";
 import { Bunny } from "./store/bunny/interface";
+import { Duck } from "./store/ducks/interface";
 import BunnyDoughnut from "./components/BunnyDoughnut";
 import DucksVsBunnies from "./components/DucksVsBunnies";
-import io from "socket.io-client";
+import { io, Socket } from "socket.io-client";
+export const socket: Socket = io("http://localhost:4000");
+
+// import socketIOClient from "socket.io-client";
 
 export const URL = "http://localhost:8000";
-const socket = io("http://localhost:4000");
 
 function App() {
   useEffect(() => {
@@ -25,6 +29,18 @@ function App() {
   const getDucks = () => {
     socket.emit("getDucks");
   };
+  useEffect(() => {
+    socket.on(`connected`, () => {
+      console.log("connected to socket");
+    });
+    socket.on("DucksDB", (payload: Duck[]) => {
+      dispatch(setAllDucks(payload));
+    });
+    return () => {
+      socket.off('connected');
+      socket.off("DucksDB");
+    };
+  }, []);
 
   const dispatch = useAppDispatch();
   const myBunnyState = useSelector(bunnyState);

@@ -19,8 +19,11 @@ const duckSlice = createSlice({
       };
       state.ducks.push(newDuck);
     },
+    setAllDucks(state, action) {
+      state.ducks = action.payload;
+    },
   },
 });
 
-export const { addDuck } = duckSlice.actions;
+export const { setAllDucks, addDuck } = duckSlice.actions;
 export default duckSlice.reducer;
